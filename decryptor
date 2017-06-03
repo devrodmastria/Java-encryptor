@@ -1,0 +1,66 @@
+/*Programmer name:    Rodrigo Mesquita
+Project name:         Project 5D
+Course, Day and time: CIS1500, Wednesday Evening
+Date of completion:   11/04/2015
+Purpose:              Allow users to decrypt data received over the internet
+*/
+
+import javax.swing.JOptionPane; // GUI class
+import java.io.*;               // Input/Output package to create text file 
+
+public class Project5D
+{
+   public static void main (String []args) throws IOException
+   {
+      String stringDigits; // Holds the string captured from the user
+      int fourDigits;      // Holds the integer converted from the string
+      int digit1=0;         // Holds first digit; initialized to zero to avoid compiling errors
+      int digit2=0;         // Holds second digit
+      int digit3=0;         // Holds third digit
+      int digit4=0;         // Holds fourth digit
+      int digit;           // Holds the looping digit within the decryption algorithm
+
+      // Prompt user for the number to be decrypted      
+      stringDigits = JOptionPane.showInputDialog("Enter four digits for decryption:");
+      fourDigits = Integer.parseInt(stringDigits);
+      
+      // Decryption loop
+      for (int x = 10000; x >= 10; x = x / 10)
+      {
+         digit = (fourDigits - (fourDigits/x)*x)/(x/10); // Breaks four digit number into separate digits
+         
+         if (digit <= 6)
+         {
+            digit = digit + 10;         // Add 10 to compensate subtraction in line 35 of Project 5E
+         } // End if
+         digit = (10 * digit) - 7 * 10; // Multiply 7 by 10 for consistency with line 32 of Project 5E 
+         digit = digit / 10;
+                                 
+         if (x == 10000)                // Check loop stage
+         {
+            digit1 = digit;              // Assign decrypted code to respective digit
+         }
+         else if (x == 1000)
+         {
+            digit2 = digit;
+         }
+         else if (x == 100)
+         {
+            digit3 = digit;
+         }
+         else 
+         {
+            digit4 = digit;
+         } // End if
+         
+      } // End of decryption for loop
+      
+      System.out.println(digit3+""+digit4+""+digit1+""+digit2);
+      // Append decrypted data to text file
+      PrintWriter decrypt = new PrintWriter(new FileOutputStream(new File("F:/Java/Project5/dataout.txt"), true));
+      decrypt.append(digit3+""+digit4+""+digit1+""+digit2);
+      decrypt.close();   
+      
+   } // End of method main
+   
+} // End of class Project5D
