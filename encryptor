@@ -1,0 +1,67 @@
+/*Programmer name:    Rodrigo Mesquita
+Project name:         Project 5E
+Course, Day and time: CIS1500, Wednesday Evening
+Date of completion:   11/04/2015
+Purpose:              Allow corporate users to encrypt data for safe transmition over the internet
+*/
+
+import javax.swing.JOptionPane; // GUI class
+import java.io.*;               // Input/Output package to create text file 
+
+public class Project5E
+{
+   public static void main (String []args) throws IOException
+   {
+      String stringDigits; // Holds the string captured from the user
+      int fourDigits;      // Holds the integer converted from the string
+      int digit1=0;         // Holds first digit; initialized to zero to avoid compiling errors
+      int digit2=0;         // Holds second digit
+      int digit3=0;         // Holds third digit
+      int digit4=0;         // Holds fourth digit
+      int digit;           // Holds the looping digit within the encryption algorithm
+
+      // Prompt user for the number to be encrypted      
+      stringDigits = JOptionPane.showInputDialog("Enter four digits for encryption:");
+      fourDigits = Integer.parseInt(stringDigits);
+      
+      // Encryption loop
+      for (int x = 10000; x >= 10; x = x / 10)
+      {
+         digit = (fourDigits - (fourDigits/x)*x)/(x/10); // Breaks four digit number into separate digits
+         digit =  digit  * 10;     // Multiply by 10 to protect integers from truncation in division
+         digit = (digit+7* 10)/10; // Multiply 7 by 10 for arithmetic consistency with last step
+         
+         if (digit >= 10)    
+         {                            
+            digit = digit - 10;    // Subtract 10 to isolate the left most digit (10 through 16)  
+         } // End if        
+                   
+         if (x == 10000)           // Check loop stage and assign remainder to respective digit
+         {
+            digit1 = digit;
+         }
+         else if (x == 1000)
+         {
+            digit2 = digit;
+         }
+         else if (x == 100)
+         {
+            digit3 = digit;
+         }
+         else
+         { 
+            digit4 = digit;
+         }  // End if
+         
+      } // End of encryption for loop
+      
+      //System.out.println(digit3+" "+digit4+" "+digit1+" "+digit2); // Sanity check
+      
+      // Generate text file and store data
+      PrintWriter encrypt = new PrintWriter("F:/Java/Project5/dataout.txt");
+      encrypt.println(digit3+""+digit4+""+digit1+""+digit2);
+      encrypt.close();   
+      
+   } // End of method main
+
+} // End of class Project5E
